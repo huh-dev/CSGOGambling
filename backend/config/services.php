@@ -22,6 +22,12 @@ return [
         'key' => env('RESEND_API_KEY'),
     ],
 
+    'steam' => [
+        'client_id'     => null,
+        'client_secret' => env('STEAM_KEY'),
+        'redirect'      => env('STEAM_REDIRECT'),
+    ],
+
     'ses' => [
         'key' => env('AWS_ACCESS_KEY_ID'),
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
