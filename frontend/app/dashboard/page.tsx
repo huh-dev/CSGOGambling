@@ -5,9 +5,9 @@ import { logout } from "@/app/actions"
 import { InventoryGrid } from "@/components/InventoryGrid"
 import { InventoryResponse } from "@/lib/types/inventory"
 
-async function fetchInventory(): Promise<InventoryResponse> {
+async function fetchInventory(refresh = false): Promise<InventoryResponse> {
   try {
-    return await getInventory()
+    return await getInventory(refresh)
   } catch (error) {
     return {
       items: [],
@@ -17,14 +17,20 @@ async function fetchInventory(): Promise<InventoryResponse> {
   }
 }
 
-export default async function DashboardPage() {
+export default async function DashboardPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}) {
   const user = await getCurrentUser()
 
   if (!user) {
     redirect("/api/logout")
   }
 
-  const inventory = await fetchInventory()
+  const params = await searchParams
+  const refresh = params.refresh === "1"
+  const inventory = await fetchInventory(refresh)
 
   return (
     <div className="flex min-h-svh flex-col">
@@ -85,9 +91,17 @@ export default async function DashboardPage() {
               <div className="rounded-lg border p-6">
                 <div className="mb-4 flex items-center justify-between">
                   <h3 className="font-medium">Inventory</h3>
-                  <span className="text-sm text-muted-foreground">
-                    {inventory.total_count} items
-                  </span>
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm text-muted-foreground">
+                      {inventory.total_count} items
+                    </span>
+                    <a
+                      href="/dashboard?refresh=1"
+                      className="inline-flex items-center justify-center rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90"
+                    >
+                      Refresh
+                    </a>
+                  </div>
                 </div>
 
                 {inventory.error ? (

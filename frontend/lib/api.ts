@@ -69,8 +69,9 @@ export async function getCurrentUser() {
   }
 }
 
-export async function getInventory(): Promise<InventoryResponse> {
-  const response = await apiFetch<InventoryResponse>("/api/inventory")
-  console.log(response)
+export async function getInventory(refresh = false): Promise<InventoryResponse> {
+  const url = refresh ? "/api/inventory?refresh=1" : "/api/inventory"
+  const response = await apiFetch<InventoryResponse>(url)
+
   return response
 }

@@ -28,9 +28,15 @@ class InventoryController extends Controller
         $steamId = $user->steam_id;
         $cacheKey = "inventory:{$steamId}";
 
-        $cached = Cache::get($cacheKey);
-        if ($cached) {
-            return response()->json($cached);
+        $skipCache = $request->boolean('refresh');
+
+        if (!$skipCache) {
+            $cached = Cache::get($cacheKey);
+            if ($cached) {
+                return response()->json($cached);
+            }
+        } else {
+            Cache::forget($cacheKey);
         }
 
         $apiKey = config('services.steamapis.key');
@@ -80,7 +86,12 @@ class InventoryController extends Controller
 
             $data = $response->json();
 
+            Log::info('Steam inventory total assets: ' . count($data['assets'] ?? []));
+            Log::info('Steam inventory total descriptions: ' . count($data['descriptions'] ?? []));
+
             $items = $this->formatInventoryItems($data);
+
+            Log::info('Formatted items count: ' . count($items));
 
             $result = [
                 'items' => $items,
