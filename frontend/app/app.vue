@@ -1,6 +1,6 @@
 <template>
-  <div class="p-4">
-  
-  <Button variant="outline">Click me</Button>
-  </div>
+  <NuxtLayout>
+      <Toaster :expand="true" richColors />
+      <NuxtPage class="font-display" />
+  </NuxtLayout>
 </template>

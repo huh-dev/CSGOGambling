@@ -13,7 +13,7 @@ export default defineNuxtConfig({
     ],
   },
 
-  modules: ['shadcn-nuxt'],
+  modules: ['shadcn-nuxt', 'nuxt-auth-sanctum'],
   shadcn: {
     /**
      * Prefix for all the imported component.
@@ -27,5 +27,13 @@ export default defineNuxtConfig({
      * @default "@/components/ui"
      */
     componentDir: '@/components/ui'
-  }
+  },
+
+  sanctum: {
+    baseUrl: process.env.NUXT_SANCTUM_BASE_URL as string,
+    mode: 'token',
+    endpoints: {
+      user: '/api/user',
+    },
+  },
 })
