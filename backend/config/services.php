@@ -28,6 +28,10 @@ return [
         'redirect'      => env('STEAM_REDIRECT'),
     ],
 
+    'steamapis' => [
+        'key' => env('STEAMAPIS_KEY'),
+    ],
+
     'ses' => [
         'key' => env('AWS_ACCESS_KEY_ID'),
         'secret' => env('AWS_SECRET_ACCESS_KEY'),

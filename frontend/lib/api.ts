@@ -1,4 +1,5 @@
 import { cookies } from "next/headers"
+import { InventoryResponse } from "./types/inventory"
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"
 
@@ -66,4 +67,10 @@ export async function getCurrentUser() {
   } catch {
     return null
   }
+}
+
+export async function getInventory(): Promise<InventoryResponse> {
+  const response = await apiFetch<InventoryResponse>("/api/inventory")
+  console.log(response)
+  return response
 }
